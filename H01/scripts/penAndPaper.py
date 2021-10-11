@@ -1,4 +1,4 @@
-import scipy
+from scipy.stats import norm as normal
 from math import sqrt
 
 def createInstance (y1, y2, y3, y4, _class):
@@ -37,10 +37,10 @@ def getVariableData (variable):
     
     return data
 
-def getGaussianArgs(variable):
+def getNormal(variable):
     """assuming that the values under the variable are distributed 
-           in a gaussian way, get the gaussian parameters"""
-           
+           in a normal way, get the normal parameters"""
+
     data = getVariableData(variable)
 
     # calculate data mean
@@ -53,9 +53,10 @@ def getGaussianArgs(variable):
         qdrDev = qdrDev + [(value - mean)**2]
     stdDev = round(sqrt(sum(qdrDev) / len(qdrDev)), 3)
 
-    return (mean, stdDev)
+    #Debug : print(mean, stdDev)
+    return normal(mean, stdDev)
+
+
             
-print(dataset)
-print(getGaussianArgs("y1"))
-print(getGaussianArgs("y3"))
-print(getGaussianArgs("y4"))
+print(getNormal("y1").cdf(0.13))
+print(getNormal("y1").pdf(0.13))
