@@ -10,6 +10,7 @@ def createInstance (y1, y2, y3, y4, _class):
             "y4" : y4,
             "class" : _class}
 
+# dataset representation
 dataset = [
     createInstance( 0.6, "A",  0.2,  0.4, 0),
     createInstance( 0.1, "B", -0.1, -0.4, 0),
@@ -24,6 +25,8 @@ dataset = [
 ]
 
 def getVariableData (variable):
+    """get all dataset data from the variable passed in the argument"""
+
     # check if the variable is part of dataset
     if (variable not in dataset[0].keys()):
         return None
@@ -35,6 +38,9 @@ def getVariableData (variable):
     return data
 
 def getGaussianArgs(variable):
+    """assuming that the values under the variable are distributed 
+           in a gaussian way, get the gaussian parameters"""
+           
     data = getVariableData(variable)
 
     # calculate data mean
