@@ -1,4 +1,5 @@
 from scipy.stats import norm as normal
+from scipy.stats import multivariate_normal as mNormal
 from math import sqrt
 
 def createInstance (y1, y2, y3, y4, _class):
@@ -24,39 +25,20 @@ dataset = [
     createInstance(-0.2, "C",  0.4,  0.3, 1)
 ]
 
-def getVariableData (variable):
-    """get all dataset data from the variable passed in the argument"""
+y3y4_c0 = mNormal(mean=[0.2, 0.25], cov=[[0.18, 0.18], [0.18, 0.25]])
+y3y4_c1 = mNormal(mean=[0.1166667, 0.083333], cov=[[0.1096667, 0.1221333], [0.1221333, 0.2136667]])
 
-    # check if the variable is part of dataset
-    if (variable not in dataset[0].keys()):
-        return None
+i = 1
+for instance in dataset:
+    y3 = instance["y3"]
+    y4 = instance["y4"]
+    print(f"x_{i} :  P(y3 = {y3}, y4 = {y4} | class = 0) = {y3y4_c0.pdf([y3, y4])}")
 
-    data = []
-    for instace in dataset:
-        data = data + [instace[variable]]
-    
-    return data
+    i += 1
 
-def getNormal(variable):
-    """assuming that the values under the variable are distributed 
-           in a normal way, get the normal parameters"""
+"""
+P(class=0| x1)= P(x1|class=0)P(class=0) / P(x1) = P(x1|class=0)P(class=0) =  P(y1=0.6|class=0) * P(y2="A"|class=0) * P(y3y4=[0.2, 0.4]|class=0) * P(class=0) / P(x1)
 
-    data = getVariableData(variable)
-
-    # calculate data mean
-    mean = round(sum(data) / len(data), 3)
-
-    # calculate data standard deviation
-    qdrDev = []
-    for value in data:
-        # calculate the quadratic deviation (x - mean)^2
-        qdrDev = qdrDev + [(value - mean)**2]
-    stdDev = round(sqrt(sum(qdrDev) / len(qdrDev)), 3)
-
-    #Debug : print(mean, stdDev)
-    return normal(mean, stdDev)
-
-
-            
-print(getNormal("y1").cdf(0.13))
-print(getNormal("y1").pdf(0.13))
+P(x1|class=0) = P(y1=0.6|class=0) * P(y2="A"|class=0) * P(y3y4=[0.2, 0.4]|class=0)
+P(x1|class=1) = P(y1=0.6|class=1) * P(y2="A"|class=1) * P(y3y4=[0.2, 0.4]|class=1)
+"""
