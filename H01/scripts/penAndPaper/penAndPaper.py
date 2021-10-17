@@ -33,6 +33,7 @@ for instance in dataset:
     y3 = instance["y3"]
     y4 = instance["y4"]
     print(f"x_{i} :  P(y3 = {y3}, y4 = {y4} | class = 0) = {y3y4_c0.pdf([y3, y4])}")
+    print(f"x_{i} :  P(y3 = {y3}, y4 = {y4} | class = 1) = {y3y4_c1.pdf([y3, y4])}\n")
 
     i += 1
 
