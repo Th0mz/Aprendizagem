@@ -76,3 +76,55 @@ pValue = ttest.pvalue
 print(ttest, pValue)
 
 
+
+
+
+
+
+
+
+
+
+
+
+5) 
+dataset = pandas.DataFrame(arff.loadarff(<path>)[0]) ; lines = len(dataset["Bare_Nuclei"])
+
+# Loop through all variables
+for variable in variables:
+    benign = []; malignant = []
+    for i in range(lines):
+         if (dataset["Class"][i] == b'malignant'):
+             malignant.append(dataset[variable][i])
+         elif (dataset["Class"][i] == b'benign'):
+             benign.append(dataset[variable][i])
+
+    labels = ["benign", "malignant"]
+    plt.hist([benign, malignant] , bins=bins, density=True, alpha=0.5, align="left")
+    plt.savefig(<path>)
+    plt.clf()
+6)
+inputs = dataset.drop(columns=["Class"]).values; outputs = dataset["Class"].values
+k_fold = KFold(n_splits=10, random_state=13, shuffle=True);accuracyKnn = {"3": [], "5": [], "7": []}
+
+for numNeighbors in range(3, 8, 2):
+    for train, test in k_fold.split(dataset):
+        knnClassifier = KNeighborsClassifier(n_neighbors = numNeighbors, weights="uniform")
+        knnClassifier = knnClassifier.fit(inputs[train], outputs[train])
+	 accuracyKnn[str(numNeighbors)].append(knnClassifier.score(inputs[test], outputs[test])
+
+for numNeighbors in accuracyKnn:
+    averageAccuracy = sum(accuracyKnn [numNeighbors]) / len(accuracyKnn[numNeighbors])
+    print(f"average accuracy k={numNeighbors} => {averageAccuracy}")
+
+7)
+accuracyNB = []
+for train, test in k_fold.split(dataset):
+    multinomialNBClassifier = MultinomialNB()
+    multinomialNBClassifier = multinomialNBClassifier.fit(inputs[train], outputs[train])
+    accuracyNB.append(multinomialNBClassifier.score(inputs[test], outputs[test])
+
+pValue = ttest_rel(accuracykNN3, accuracyNB, alternative="greater").pvalue
+    
+
+
