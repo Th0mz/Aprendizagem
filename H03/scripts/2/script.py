@@ -21,8 +21,8 @@ predictions2 = np.ndarray(shape = (0,))
 actual = np.ndarray(shape = (0,))
 
 k_fold = KFold(n_splits=5, random_state= 0, shuffle=True)
-classifier1 = MLPClassifier(solver = "sgd",alpha = 1, activation = "relu", hidden_layer_sizes=(3, 2), early_stopping = False,  random_state= 13, max_iter = 1500)
-classifier2 = MLPClassifier(solver = "sgd",alpha = 1, activation = "relu", hidden_layer_sizes=(3, 2), early_stopping = True,  random_state= 13, max_iter = 1500)
+classifier1 = MLPClassifier(alpha = 20, activation = "relu", hidden_layer_sizes=(3, 2), early_stopping = False,  random_state= 13, max_iter = 1500)
+classifier2 = MLPClassifier(alpha = 20, activation = "relu", hidden_layer_sizes=(3, 2), early_stopping = True,  random_state= 13, max_iter = 1500)
 
 for train, test in k_fold.split(dataset):
     classifier1.fit(inputs[train], outputs[train])
@@ -31,14 +31,11 @@ for train, test in k_fold.split(dataset):
     predicted1 = classifier1.predict(inputs[test])
     predicted2 = classifier2.predict(inputs[test])
 
-    print(classifier1.score(inputs[test],outputs[test]))
-
     predictions1 = np.concatenate((predictions1,predicted1), axis= 0)
     predictions2 = np.concatenate((predictions2,predicted2), axis= 0)
     actual = np.concatenate((actual,outputs[test]), axis= 0)
 
 
-print("=============CONFUSION==============")
 cm1 = confusion_matrix(actual, predictions1, labels = classifier1.classes_)
 display1 = ConfusionMatrixDisplay(confusion_matrix=cm1, display_labels = classifier1.classes_)
 
